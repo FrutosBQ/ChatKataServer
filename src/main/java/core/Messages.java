@@ -37,5 +37,17 @@ public class Messages {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Messages messages = (Messages) o;
+
+        if (nextSeq != messages.getNextSeq()) return false;
+        if (this.messages != null ? !this.messages.equals(messages.getMessages()) : messages.getMessages() != null) return false;
+
+        return true;
+    }
 
 }
