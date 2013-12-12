@@ -12,6 +12,11 @@ public class Message {
 
     private Message(){}
 
+    public Message(String username, String content) {
+        this.nick = username;
+        this.message = content;
+    }
+
     public String getNick() {
         return nick;
     }
@@ -28,13 +33,8 @@ public class Message {
         this.message = message;
     }
 
-    public Message(String username, String content) {
-        this.nick = username;
-        this.message = content;
-    }
-
     public boolean equals(Object obj) {
         Message message = (Message) obj;
-        return (this.nick.equals(message.nick) && this.message.equals(message.message));
+        return (this.nick.equals(message.getNick()) && this.message.equals(message.getMessage()));
     }
 }

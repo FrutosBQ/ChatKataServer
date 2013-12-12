@@ -3,6 +3,7 @@ package resources;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.yammer.dropwizard.testing.ResourceTest;
+import configuration.Constants;
 import core.Messages;
 import core.Message;
 import core.MessagesPersistence;
@@ -44,20 +45,20 @@ public class ChatKataResourceTest extends ResourceTest {
     @Test
     public void postAddMessagesToPersistence() throws Exception{
         Message messageToSend = new Message("Username", "Hello World!");
-        client().resource("/chat-kata/api/chat").type(MediaType.APPLICATION_JSON).post(ClientResponse.class, messageToSend);
+        postMessage(messageToSend);
         verify(messagesPersistenceMock).add(messageToSend);
     }
 
 
     @Test
     public void getReturnLastMessagesCorrectly() throws Exception{
-        getMessages();
+        getMessages(0);
         verify(messagesPersistenceMock).getMessagesFrom(0);
     }
 
     @Test
     public void getReturnNextSeqCorrectly() throws Exception{
-        getMessages();
+        getMessages(0);
         verify(messagesPersistenceMock).getNextSeq();
     }
 
@@ -72,33 +73,29 @@ public class ChatKataResourceTest extends ResourceTest {
         reset(messagesPersistenceMock);
         when(messagesPersistenceMock.getMessagesFrom(0)).thenReturn(messages);
         when(messagesPersistenceMock.getNextSeq()).thenReturn(5);
-        Messages response = getMessages();
+        Messages response = getMessages(0);
         assertThat(response.getMessages()).isEqualTo(messages);
     }
 
     @Test
     public void getMessagesFromCorrectlyIndex() throws Exception{
-        WebResource webResource = client().resource("/chat-kata/api/chat?next_seq=1");
-        WebResource.Builder builder = webResource.type(MediaType.APPLICATION_JSON);
-        Messages response = builder.get(Messages.class);
+        Messages response =  getMessages(1);
         verify(messagesPersistenceMock).getMessagesFrom(1);
     }
     @Test
     public void getMessagesFromNotNegativeIndex() throws Exception{
-        WebResource webResource = client().resource("/chat-kata/api/chat?next_seq=-1");
-        WebResource.Builder builder = webResource.type(MediaType.APPLICATION_JSON);
-        Messages response = builder.get(Messages.class);
+        Messages response =  getMessages(-1);
         verify(messagesPersistenceMock).getMessagesFrom(0);
     }
 
-    private Messages getMessages() {
-        WebResource webResource = client().resource("/chat-kata/api/chat?next_seq=0");
+    private Messages getMessages(int index) {
+        WebResource webResource = client().resource(Constants.API_SERVER_PATH).queryParam(Constants.GET_PARAM_NEXT_SEQ,Integer.toString(index));
         WebResource.Builder builder = webResource.type(MediaType.APPLICATION_JSON);
         return builder.get(Messages.class);
     }
 
     private ClientResponse postMessage(Message messageToSend) {
-        WebResource webResource = client().resource("/chat-kata/api/chat");
+        WebResource webResource = client().resource(Constants.API_SERVER_PATH);
         WebResource.Builder builder = webResource.type(MediaType.APPLICATION_JSON);
         return builder.post(ClientResponse.class, messageToSend);
     }
