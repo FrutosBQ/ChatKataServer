@@ -13,6 +13,7 @@ import java.util.List;
 
 @Path(Constants.API_SERVER_PATH)
 @Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class ChatKataResource {
 
     private MessagesPersistence messagesPersistence;
