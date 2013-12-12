@@ -1,8 +1,8 @@
 package resources;
 
 import configuration.Constants;
-import core.Messages;
 import core.Message;
+import core.Messages;
 import core.MessagesPersistence;
 
 import javax.ws.rs.*;

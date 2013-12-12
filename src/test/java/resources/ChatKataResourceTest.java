@@ -4,13 +4,12 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.yammer.dropwizard.testing.ResourceTest;
 import configuration.Constants;
-import core.Messages;
 import core.Message;
+import core.Messages;
 import core.MessagesPersistence;
 import org.junit.Test;
 
 import javax.ws.rs.core.MediaType;
-
 import java.util.ArrayList;
 import java.util.List;
 

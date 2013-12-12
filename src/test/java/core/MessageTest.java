@@ -2,12 +2,7 @@ package core;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.yammer.dropwizard.testing.JsonHelpers.asJson;
-import static com.yammer.dropwizard.testing.JsonHelpers.fromJson;
-import static com.yammer.dropwizard.testing.JsonHelpers.jsonFixture;
+import static com.yammer.dropwizard.testing.JsonHelpers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
