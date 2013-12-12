@@ -33,6 +33,7 @@ public class Message {
         this.message = message;
     }
 
+    @Override
     public boolean equals(Object obj) {
         Message message = (Message) obj;
         return (this.nick.equals(message.getNick()) && this.message.equals(message.getMessage()));

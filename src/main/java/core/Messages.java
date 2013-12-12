@@ -8,7 +8,7 @@ import java.util.List;
 public class Messages {
 
     @JsonProperty
-    private List<Message> messages = new ArrayList<Message>();
+    private List<Message> messages;
     @JsonProperty
     private int nextSeq;
 
@@ -33,9 +33,7 @@ public class Messages {
     public Messages(int nextSeq, List<Message> messagesFrom){
         this.nextSeq = nextSeq;
         this.messages = messagesFrom;
-
     }
-
 
     @Override
     public boolean equals(Object o) {
