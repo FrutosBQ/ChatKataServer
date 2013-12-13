@@ -1,5 +1,6 @@
 package resources;
 
+import com.google.common.base.Optional;
 import configuration.Constants;
 import core.Message;
 import core.Messages;
@@ -33,8 +34,13 @@ public class ChatKataResource {
     }
 
     @GET
-    public Messages getMessages(@QueryParam(Constants.GET_PARAM_NEXT_SEQ) int index){
-        if(index<0) index=0;
+    public Messages getMessages(@QueryParam(Constants.GET_PARAM_NEXT_SEQ) Optional<String> param) {
+        String indexString = param.or("0");
+        int index = 0;
+        try {
+            index = Integer.parseInt(indexString);
+        } catch (NumberFormatException e) {
+        }
         List<Message> messages = messagesPersistence.getMessagesFrom(index);
         int nextSeq = messagesPersistence.getNextSeq();
         Messages response = new Messages(nextSeq,messages );

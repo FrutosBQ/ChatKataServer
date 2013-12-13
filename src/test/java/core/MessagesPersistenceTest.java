@@ -48,4 +48,35 @@ public class MessagesPersistenceTest  {
         messagesPersistence.add(new Message("user_5","message_5"));
         assertThat(messagesPersistence.getNextSeq()).isEqualTo(5);
     }
+
+    @Test
+    public void getListFromZeroIfNegativeIndex() throws Exception {
+        MessagesPersistence messagesPersistence = new MessagesPersistence();
+        messagesPersistence.add(new Message("user_1", "message_1"));
+        messagesPersistence.add(new Message("user_2", "message_2"));
+        messagesPersistence.add(new Message("user_3", "message_3"));
+        messagesPersistence.add(new Message("user_4", "message_4"));
+        messagesPersistence.add(new Message("user_5", "message_5"));
+        List<Message> messages = new ArrayList<Message>();
+        messages.add(new Message("user_1", "message_1"));
+        messages.add(new Message("user_2", "message_2"));
+        messages.add(new Message("user_3", "message_3"));
+        messages.add(new Message("user_4", "message_4"));
+        messages.add(new Message("user_5", "message_5"));
+        List<Message> lastMessages = messagesPersistence.getMessagesFrom(-1);
+        assertThat(messages).isEqualTo(lastMessages);
+    }
+
+    @Test
+    public void getEmptyListIfOutOfBoundsIndex() throws Exception {
+        MessagesPersistence messagesPersistence = new MessagesPersistence();
+        messagesPersistence.add(new Message("user_1", "message_1"));
+        messagesPersistence.add(new Message("user_2", "message_2"));
+        messagesPersistence.add(new Message("user_3", "message_3"));
+        messagesPersistence.add(new Message("user_4", "message_4"));
+        messagesPersistence.add(new Message("user_5", "message_5"));
+        List<Message> messages = new ArrayList<Message>();
+        List<Message> lastMessages = messagesPersistence.getMessagesFrom(10);
+        assertThat(messages).isEqualTo(lastMessages);
+    }
 }

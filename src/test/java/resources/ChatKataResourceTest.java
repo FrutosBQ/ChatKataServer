@@ -51,13 +51,19 @@ public class ChatKataResourceTest extends ResourceTest {
 
     @Test
     public void getReturnLastMessagesCorrectly() throws Exception{
-        getMessages(0);
+        getMessages("0");
+        verify(messagesPersistenceMock).getMessagesFrom(0);
+    }
+
+    @Test
+    public void getMessagesCorrectlyFromNotANumberIndex() throws Exception {
+        getMessages("a");
         verify(messagesPersistenceMock).getMessagesFrom(0);
     }
 
     @Test
     public void getReturnNextSeqCorrectly() throws Exception{
-        getMessages(0);
+        getMessages("0");
         verify(messagesPersistenceMock).getNextSeq();
     }
 
@@ -72,23 +78,12 @@ public class ChatKataResourceTest extends ResourceTest {
         reset(messagesPersistenceMock);
         when(messagesPersistenceMock.getMessagesFrom(0)).thenReturn(messages);
         when(messagesPersistenceMock.getNextSeq()).thenReturn(5);
-        Messages response = getMessages(0);
+        Messages response = getMessages("0");
         assertThat(response.getMessages()).isEqualTo(messages);
     }
 
-    @Test
-    public void getMessagesFromCorrectlyIndex() throws Exception{
-        Messages response =  getMessages(1);
-        verify(messagesPersistenceMock).getMessagesFrom(1);
-    }
-    @Test
-    public void getMessagesFromNotNegativeIndex() throws Exception{
-        Messages response =  getMessages(-1);
-        verify(messagesPersistenceMock).getMessagesFrom(0);
-    }
-
-    private Messages getMessages(int index) {
-        WebResource webResource = client().resource(Constants.API_SERVER_PATH).queryParam(Constants.GET_PARAM_NEXT_SEQ,Integer.toString(index));
+    private Messages getMessages(String index) {
+        WebResource webResource = client().resource(Constants.API_SERVER_PATH).queryParam(Constants.GET_PARAM_NEXT_SEQ, index);
         WebResource.Builder builder = webResource.type(MediaType.APPLICATION_JSON);
         return builder.get(Messages.class);
     }

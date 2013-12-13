@@ -23,6 +23,15 @@ public class MessagesPersistence {
     }
 
     public List<Message> getMessagesFrom(int index){
-        return messageList.subList(index, messageList.size());
+        if (index < 0) index = 0;
+        List<Message> result = new ArrayList<Message>();
+        try {
+            result = messageList.subList(index, messageList.size());
+        } catch (IndexOutOfBoundsException e) {
+        } catch (IllegalArgumentException e) {
+        }
+        return result;
     }
+
+
 }
